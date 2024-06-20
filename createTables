@@ -1,0 +1,89 @@
+CREATE TABLE Homeowner( 
+    SSN CHAR(11) PRIMARY KEY,   
+    Name VARCHAR(100) NOT NULL,   
+   ); 
+
+CREATE TABLE EmploymentInfo ( 
+    HomeOwnerSSN CHAR(11) PRIMARY KEY,   
+    CurrentEmployer VARCHAR(100) NOT NULL,   
+    CurrentEmployerAddress VARCHAR(255) NOT NULL,  
+    EmploymentStartDate DATE NOT NULL,   
+    CurrentSalary DECIMAL(10, 2) NOT NULL,  
+    JobTitle VARCHAR(100) NOT NULL,  
+    EmptRecordExtractedDate DATE NOT NULL,  
+  ); 
+
+  CREATE TABLE PersonalProperty (
+    ItemName VARCHAR(100) NOT NULL, 
+    Type VARCHAR(50) NOT NULL, 
+    Value DECIMAL(10, 2) NOT NULL,  
+    HomeAddress VARCHAR(255) NOT NULL, 
+    PRIMARY KEY (Type, HomeAddress)  
+);
+
+CREATE TABLE Home (
+    Address VARCHAR(255) PRIMARY KEY,
+    HomeownerSSN CHAR(11) NOT NULL, 
+    TotalSqFt INT NOT NULL,
+    NumberOfRooms INT NOT NULL,
+    AssessedValue DECIMAL(15, 2) NOT NULL,
+    YearAssessed INT NOT NULL,
+    HasOtherBldgs CHAR(1) CHECK (HasOtherBldgs IN ('Y', 'N')),
+    DataObtainedDate DATE NOT NULL,
+    NumbSmokeDetectors INT NOT NULL,
+);
+
+CREATE TABLE MortgageHolder (
+    Name VARCHAR(100) NOT NULL,
+    Address VARCHAR(255) NOT NULL,
+    HomeAddress VARCHAR(255) NOT NULL,
+    MortgageAmount DECIMAL(15, 2) NOT NULL,
+    PRIMARY KEY (Name, Address, HomeAddress)
+);
+
+CREATE TABLE Policy (
+    PolicyEffectiveDate DATE NOT NULL,
+    PolicyExpirationDate DATE NOT NULL,
+    PremiumAmount DECIMAL(10, 2) NOT NULL,
+    BankName VARCHAR(100) NOT NULL,
+    AccountNumber VARCHAR(50) NOT NULL,
+    RoutingNumber VARCHAR(9) NOT NULL,
+    RenewalDate DATE,
+    NewAssessmentValue DECIMAL(15, 2),
+    AssessmentRetrievedDate DATE,
+    LossAdjustment DECIMAL(10, 2),
+    DocumentType VARCHAR(50),
+    DocumentName VARCHAR(100),
+    PRIMARY KEY (PolicyEffectiveDate, PolicyExpirationDate)
+);
+
+CREATE TABLE Claim (
+    TypeOfLoss VARCHAR(100) NOT NULL,
+    DateOfLoss DATE NOT NULL,
+    DescriptionOfLoss VARCHAR(255) NOT NULL,
+    HomeAddress VARCHAR(255) NOT NULL,
+    ClaimHandlerName VARCHAR(100) NOT NULL,
+    ClaimHandlerEmplID INT NOT NULL,
+    ClaimClosed CHAR(1) CHECK (ClaimClosed IN ('Y', 'N')),
+    PRIMARY KEY (DateOfLoss, HomeAddress)
+);
+
+CREATE TABLE PropertyDamageClaim (
+    HomeAddress VARCHAR(255) NOT NULL,
+    DateOfLoss DATE NOT NULL,
+    DamagedItem VARCHAR(100) NOT NULL,
+    ReserveAmount DECIMAL(10, 2) NOT NULL,
+    ReserveDate DATE NOT NULL,
+    PaymentDates DATE,
+    PRIMARY KEY (DateOfLoss, HomeAddress)
+);
+
+CREATE TABLE PersonalInjuryClaim (
+    HomeAddress VARCHAR(255) NOT NULL,
+    DateOfLoss DATE NOT NULL,
+    InjuryDetail VARCHAR(255) NOT NULL,
+    MedicalProviderName VARCHAR(100) NOT NULL,
+    PaymentInfo VARCHAR(255),
+    MedicalReserveAmount DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (DateOfLoss, HomeAddress)
+);
