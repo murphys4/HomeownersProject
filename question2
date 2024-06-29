@@ -1,0 +1,26 @@
+--answer to question 2
+CREATE VIEW HomeownerPolicyView AS
+SELECT 
+    h.SSN,
+    h.Name AS HomeownerName,
+    e.CurrentEmployer,
+    e.JobTitle,
+    e.CurrentSalary,
+    ho.Address AS HomeAddress,
+    ho.TotalSqFt,
+    ho.NumberOfRooms,
+    ho.AssessedValue,
+    p.PolicyEffectiveDate,
+    p.PolicyExpirationDate,
+    p.PremiumAmount,
+    p.BankName,
+    p.AccountNumber,
+    p.RoutingNumber
+FROM 
+    Homeowner h
+JOIN 
+    EmploymentInfo e ON h.SSN = e.HomeOwnerSSN
+JOIN 
+    Home ho ON h.SSN = ho.HomeownerSSN
+JOIN 
+    Policy p ON ho.Address = p.HomeAddress;
