@@ -1,0 +1,56 @@
+-- answer to question 1
+SELECT COUNT(*) AS NumberOfRows
+FROM Policy;
+
+--answer to question 2
+CREATE VIEW HomeownerPolicyView AS
+SELECT 
+    h.SSN,
+    h.Name AS HomeownerName,
+    e.CurrentEmployer,
+    e.JobTitle,
+    e.CurrentSalary,
+    ho.Address AS HomeAddress,
+    ho.TotalSqFt,
+    ho.NumberOfRooms,
+    ho.AssessedValue,
+    p.PolicyEffectiveDate,
+    p.PolicyExpirationDate,
+    p.PremiumAmount,
+    p.BankName,
+    p.AccountNumber,
+    p.RoutingNumber
+FROM 
+    Homeowner h
+JOIN 
+    EmploymentInfo e ON h.SSN = e.HomeOwnerSSN
+JOIN 
+    Home ho ON h.SSN = ho.HomeownerSSN
+JOIN 
+    Policy p ON ho.Address = p.HomeAddress;
+
+--answer to question 3
+CREATE VIEW HomeownerTotalPremiumView AS
+SELECT 
+    h.SSN,
+    h.Name AS HomeownerName,
+    e.CurrentEmployer,
+    e.JobTitle,
+    e.CurrentSalary,
+    ho.Address AS HomeAddress,
+    ho.TotalSqFt,
+    ho.NumberOfRooms,
+    ho.AssessedValue,
+    (
+        SELECT SUM(p.PremiumAmount)
+        FROM Policy p
+        WHERE p.HomeAddress = ho.Address
+    ) AS TotalPremiumAmount
+FROM 
+    Homeowner h
+JOIN 
+    EmploymentInfo e ON h.SSN = e.HomeOwnerSSN
+JOIN 
+    Home ho ON h.SSN = ho.HomeownerSSN;
+
+-- answer to question 4
