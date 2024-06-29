@@ -1,7 +1,7 @@
 CREATE TABLE Homeowner( 
     SSN CHAR(11) PRIMARY KEY,   
-    Name VARCHAR(100) NOT NULL,   
-   ); 
+    Name VARCHAR(100) NOT NULL   
+); 
 
 CREATE TABLE EmploymentInfo ( 
     HomeOwnerSSN CHAR(11) PRIMARY KEY,   
@@ -11,14 +11,16 @@ CREATE TABLE EmploymentInfo (
     CurrentSalary DECIMAL(10, 2) NOT NULL,  
     JobTitle VARCHAR(100) NOT NULL,  
     EmptRecordExtractedDate DATE NOT NULL,  
-  ); 
+    FOREIGN KEY (HomeOwnerSSN) REFERENCES Homeowner(SSN)
+); 
 
-  CREATE TABLE PersonalProperty (
+CREATE TABLE PersonalProperty (
     ItemName VARCHAR(100) NOT NULL, 
     Type VARCHAR(50) NOT NULL, 
     Value DECIMAL(10, 2) NOT NULL,  
     HomeAddress VARCHAR(255) NOT NULL, 
-    PRIMARY KEY (Type, HomeAddress)  
+    PRIMARY KEY (Type, HomeAddress, ItemName),
+    FOREIGN KEY (HomeAddress) REFERENCES Home(Address)
 );
 
 CREATE TABLE Home (
@@ -31,6 +33,7 @@ CREATE TABLE Home (
     HasOtherBldgs CHAR(1) CHECK (HasOtherBldgs IN ('Y', 'N')),
     DataObtainedDate DATE NOT NULL,
     NumbSmokeDetectors INT NOT NULL,
+    FOREIGN KEY (HomeownerSSN) REFERENCES Homeowner(SSN)
 );
 
 CREATE TABLE MortgageHolder (
@@ -38,12 +41,14 @@ CREATE TABLE MortgageHolder (
     Address VARCHAR(255) NOT NULL,
     HomeAddress VARCHAR(255) NOT NULL,
     MortgageAmount DECIMAL(15, 2) NOT NULL,
-    PRIMARY KEY (Name, Address, HomeAddress)
+    PRIMARY KEY (Name, Address, HomeAddress),
+    FOREIGN KEY (HomeAddress) REFERENCES Home(Address)
 );
 
 CREATE TABLE Policy (
     PolicyEffectiveDate DATE NOT NULL,
     PolicyExpirationDate DATE NOT NULL,
+    HomeAddress VARCHAR(255) NOT NULL,
     PremiumAmount DECIMAL(10, 2) NOT NULL,
     BankName VARCHAR(100) NOT NULL,
     AccountNumber VARCHAR(50) NOT NULL,
@@ -53,37 +58,51 @@ CREATE TABLE Policy (
     AssessmentRetrievedDate DATE,
     LossAdjustment DECIMAL(10, 2),
     DocumentType VARCHAR(50),
-    DocumentName VARCHAR(100),
-    PRIMARY KEY (PolicyEffectiveDate, PolicyExpirationDate)
+    DocumentTimeStamp TIMESTAMP,
+    PRIMARY KEY (PolicyEffectiveDate, PolicyExpirationDate, HomeAddress),
+    FOREIGN KEY (HomeAddress) REFERENCES Home(Address)
 );
 
 CREATE TABLE Claim (
     TypeOfLoss VARCHAR(100) NOT NULL,
     DateOfLoss DATE NOT NULL,
+    TimeOfLoss TIME NOT NULL,
     DescriptionOfLoss VARCHAR(255) NOT NULL,
     HomeAddress VARCHAR(255) NOT NULL,
     ClaimHandlerName VARCHAR(100) NOT NULL,
-    ClaimHandlerEmplID INT NOT NULL,
+    ClaimHandlerEmpID INT NOT NULL,
     ClaimClosed CHAR(1) CHECK (ClaimClosed IN ('Y', 'N')),
-    PRIMARY KEY (DateOfLoss, HomeAddress)
+    PRIMARY KEY (DateOfLoss, HomeAddress),
+    FOREIGN KEY (HomeAddress) REFERENCES Home(Address)
 );
 
 CREATE TABLE PropertyDamageClaim (
-    HomeAddress VARCHAR(255) NOT NULL,
     DateOfLoss DATE NOT NULL,
+    HomeAddress VARCHAR(255) NOT NULL,
     DamagedItem VARCHAR(100) NOT NULL,
+    DamageCost DECIMAL(10, 2) NOT NULL,
     ReserveAmount DECIMAL(10, 2) NOT NULL,
     ReserveDate DATE NOT NULL,
     PaymentDates DATE,
-    PRIMARY KEY (DateOfLoss, HomeAddress)
+    ClaimClosed CHAR(1) CHECK (ClaimClosed IN ('Y', 'N')),
+    PRIMARY KEY (DateOfLoss, HomeAddress, DamagedItem),
+    FOREIGN KEY (DateOfLoss, HomeAddress) REFERENCES Claim(DateOfLoss, HomeAddress)
 );
 
 CREATE TABLE PersonalInjuryClaim (
-    HomeAddress VARCHAR(255) NOT NULL,
     DateOfLoss DATE NOT NULL,
+    HomeAddress VARCHAR(255) NOT NULL,
+    InjuredPersonName VARCHAR(100) NOT NULL,
+    InjuredPersonAddress VARCHAR(255) NOT NULL,
     InjuryDetail VARCHAR(255) NOT NULL,
     MedicalProviderName VARCHAR(100) NOT NULL,
-    PaymentInfo VARCHAR(255),
+    MedicalProviderAddress VARCHAR(255) NOT NULL,
     MedicalReserveAmount DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (DateOfLoss, HomeAddress)
+    PaymentDate DATE,
+    PaymentAmount DECIMAL(10, 2),
+    PayeeName VARCHAR(100),
+    PRIMARY KEY (DateOfLoss, HomeAddress, InjuredPersonName),
+    FOREIGN KEY (DateOfLoss, HomeAddress) REFERENCES Claim(DateOfLoss, HomeAddress)
+);
+
 );
