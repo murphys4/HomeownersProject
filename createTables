@@ -1,26 +1,6 @@
 CREATE TABLE Homeowner( 
     SSN CHAR(11) PRIMARY KEY,   
     Name VARCHAR(100) NOT NULL   
-); 
-
-CREATE TABLE EmploymentInfo ( 
-    HomeOwnerSSN CHAR(11) PRIMARY KEY,   
-    CurrentEmployer VARCHAR(100) NOT NULL,   
-    CurrentEmployerAddress VARCHAR(255) NOT NULL,  
-    EmploymentStartDate DATE NOT NULL,   
-    CurrentSalary DECIMAL(10, 2) NOT NULL,  
-    JobTitle VARCHAR(100) NOT NULL,  
-    EmptRecordExtractedDate DATE NOT NULL,  
-    FOREIGN KEY (HomeOwnerSSN) REFERENCES Homeowner(SSN)
-); 
-
-CREATE TABLE PersonalProperty (
-    ItemName VARCHAR(100) NOT NULL, 
-    Type VARCHAR(50) NOT NULL, 
-    Value DECIMAL(10, 2) NOT NULL,  
-    HomeAddress VARCHAR(255) NOT NULL, 
-    PRIMARY KEY (Type, HomeAddress, ItemName),
-    FOREIGN KEY (HomeAddress) REFERENCES Home(Address)
 );
 
 CREATE TABLE Home (
@@ -34,6 +14,26 @@ CREATE TABLE Home (
     DataObtainedDate DATE NOT NULL,
     NumbSmokeDetectors INT NOT NULL,
     FOREIGN KEY (HomeownerSSN) REFERENCES Homeowner(SSN)
+);
+
+CREATE TABLE EmploymentInfo ( 
+    HomeOwnerSSN CHAR(11) PRIMARY KEY,   
+    CurrentEmployer VARCHAR(100) NOT NULL,   
+    CurrentEmployerAddress VARCHAR(255) NOT NULL,  
+    EmploymentStartDate DATE NOT NULL,   
+    CurrentSalary DECIMAL(10, 2) NOT NULL,  
+    JobTitle VARCHAR(100) NOT NULL,  
+    EmptRecordExtractedDate DATE NOT NULL,  
+    FOREIGN KEY (HomeOwnerSSN) REFERENCES Homeowner(SSN)
+);
+
+CREATE TABLE PersonalProperty (
+    ItemName VARCHAR(100) NOT NULL, 
+    Type VARCHAR(50) NOT NULL, 
+    Value DECIMAL(10, 2) NOT NULL,  
+    HomeAddress VARCHAR(255) NOT NULL, 
+    PRIMARY KEY (Type, HomeAddress, ItemName),
+    FOREIGN KEY (HomeAddress) REFERENCES Home(Address)
 );
 
 CREATE TABLE MortgageHolder (
@@ -103,6 +103,4 @@ CREATE TABLE PersonalInjuryClaim (
     PayeeName VARCHAR(100),
     PRIMARY KEY (DateOfLoss, HomeAddress, InjuredPersonName),
     FOREIGN KEY (DateOfLoss, HomeAddress) REFERENCES Claim(DateOfLoss, HomeAddress)
-);
-
 );
