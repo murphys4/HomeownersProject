@@ -46,7 +46,7 @@ INSERT INTO dbo.PersonalProperty (ItemName, Type, Value, HomeAddress) VALUES
 ('earrings', 'jewelry', 7640.29, '5230 Jennifer Junctions East Patriciatown, OH 91748'),
 ('phone', 'electronics', 681.72, '74398 Smith Squares Josephton, MO 28268');
 
-INSERT INTO dbo.MortgageHolder (HomeAddress, Name, MortgageHolderAddress, MortgageAmount) VALUES
+INSERT INTO dbo.MortgageHolder (HomeAddress, Name, Address, MortgageAmount) VALUES
 ('95159 Victor Burgs Apt. 347 Lake Brian, NY 00929', 'Adrian Taylor', '596 Webb Isle Dukeport, OK 78545', 261126.70),
 ('Unit 3991 Box 5940 DPO AP 35048', 'Stephanie Hernandez', '8402 Amanda Vista Apt. 524 Juliantown, RI 21307', 240870.67),
 ('99532 Misty Lake North Crystalport, UT 41148', 'Michael Neift', '2778 Campbell Flats Suite 299 North Ernest, NJ 28062', 334695.96),
