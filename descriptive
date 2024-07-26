@@ -1,0 +1,4 @@
+SELECT ei.CurrentEmployer, COUNT(*) AS NumberOfEmployees, AVG(ei.CurrentSalary) AS AverageSalary
+FROM dbo.EmploymentInfo ei
+GROUP BY ei.CurrentEmployer
+ORDER BY NumberOfEmployees DESC;
