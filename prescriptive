@@ -1,0 +1,12 @@
+SELECT 
+    h.Address, 
+    ho.Name AS HomeownerName, 
+    h.AssessedValue
+FROM 
+    dbo.Home h
+JOIN 
+    dbo.Homeowner ho ON h.HomeownerSSN = ho.SSN
+WHERE 
+    h.AssessedValue > 500000 
+ORDER BY 
+    h.AssessedValue DESC;
