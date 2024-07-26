@@ -1,0 +1,10 @@
+SELECT 
+    YEAR(DateOfLoss) AS Year, 
+    TypeOfLoss,  
+    COUNT(*) AS NumberOfClaims 
+FROM 
+    dbo.Claim
+GROUP BY 
+    YEAR(DateOfLoss), TypeOfLoss
+ORDER BY 
+    Year, TypeOfLoss;
